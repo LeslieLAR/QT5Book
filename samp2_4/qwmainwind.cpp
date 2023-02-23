@@ -145,10 +145,6 @@ void QWMainWind::actOpen_triggered()
         }
         aFile.close();
     }
-    else
-    {
-        QMessageBox::warning(this, "警告", "请选择一个文件");
-    }
 }
 
 void QWMainWind::actSavetriggered()
@@ -167,11 +163,6 @@ void QWMainWind::actSavetriggered()
         ui->textEdit->clear();
 
     }
-    else
-    {
-        QMessageBox::warning(this, "警告", "请选择一个文件");
-    }
-
 }
 
 void QWMainWind::spinBoxFontSize_valueChanged(int aFontSize)
