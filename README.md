@@ -96,7 +96,7 @@ QSpinBox *sp 工nBox = qobject cast<QSpinBox *>(sender()) ;
 
 ``` c++
 // 在下面的自定义类QPerson 的signals 部分定义一个信号ageChanged(int)
-class QPerson : publ 工C QOb] ect
+class QPerson : publiC QObject
 {
     Q OBJECT
 private:
