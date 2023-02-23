@@ -1,7 +1,11 @@
 # QT5Book
 《Qt 5.9 C++开发指南》
 
-## 信号与槽
+## 第一章 认识Qt
+
+## 第二章 GU1 I 应用程序设计墓础
+
+### 信号与槽
 
 信号与槽（ Signal & Slot ）是Qt 编程的基础，也是Qt 的一大创新。因为有了信号与槽的编程机制，在Qt 中处理界面各个组件的交互操作时变得更加直观和简单。
 
@@ -37,7 +41,7 @@ SIGNAL 和SLOT 是Qt 的宏，用于指明信号和槽，并将它们的参数�
 - 在使用信号与槽的类中，必须在类的定义中加入宏**Q_OBJECT** 。
 -  当一个信号被发射时， 与其关联的槽函数通常被立即执行，就像正常调用一个函数一样。只有当信号关联的所有槽函数执行完毕后，才会执行发射信号处后面的代码。信号与槽机制是Qt GUI 编程的基础，使用信号与槽机制可以比较容易地将信号与响应代码关联起来。
 
-# 为应用程序设置图标
+### 为应用程序设置图标
 
 用Qt C reator 创建的项目编译后的可执行文件具有默认的图标，如果需要为应用设置一个自己的图标， 其操作很简单， 只需两步。
 
@@ -49,4 +53,63 @@ SIGNAL 和SLOT 是Qt 的宏，用于指明信号和槽，并将它们的参数�
   RC_ICONS = Appicon.ico
   ```
 
-  > 其中，“ Applcon.ico” 就是复制到项目源程序目录下的图标文件名称。这样设置后， 编译后生成的可执行文件，以及主窗口的图标就换成设置的图标了。
+  > 其中，“ Applcon.ico” 就是复制到项目源程序目录下的图标文件名称。这样设置后， 编译后生成的可执行文件，以及主窗口的图标就换成设置的图标了。生成图标网站:https://www.bitbug.net/
+
+## 第三章 Qt 类库概述
+
+### 信号与槽补充
+
+- connect（） 函数的不同参数形式
+
+**QObject::connect()** 函数有多重参数形式， 一种参数形式的函数原型是：
+
+```c++
+QMetaObject::Connection QObject::connect(const QObject *sender,canst char* signal,const QObject *receiver,const char *method,Qt ::ConnectionType type = Qt::AutoConnection)
+```
+
+使用这种参数形式的**connect()**进行信号与槽函数的连接时， 一般句法如下：
+
+```
+QObject::connect(sender,SIGNAL(signal()),receiver,SLOT(slot()));
+```
+
+这里使用了宏**SIGNAL()** 和**SLOT()**指定信号和槽函数， 而且如果信号和槽函数带有参数， 还需注明参数类型。
+
+另外一种参数形式的**connect()** 函数的原型是：
+
+```c++
+QMetaObject::Connection QObject::connect(const QObject * sender , canst QMetaMethod &signal, const QObject *receiver, canst QMetaMethod &method,Qt:ConnectionType type = Qt::AutoConnection)
+```
+
+对于具有默认参数的信号与槽（即信号名称是唯一的， 没有参数不同而同名的两个信号） ，可
+以使用这种函数指针形式进行关联
+
+-  使用sender（）获得信号发射者
+
+在槽函数里， 使用**QObject: : sender()**可以获取信号发射者的指针。如果知道信号发射者的类型，可以将指针投射为确定的类型， 然后使用这个确定类的接口函数。
+```c++
+QSpinBox *sp 工nBox = qobject cast<QSpinBox *>(sender()) ;
+```
+- 自定义信号及其使用
+
+在自己设计的类里也可以自定义信号，信号就是在类定义里声明的一个函数，但是这个函数无需实现， 只需发射(emit) 。信号函数必须是无运回值的函数，但是可以有输入参数。信号函数无需实现， 只需在某些条件下发射信号。
+
+``` c++
+// 在下面的自定义类QPerson 的signals 部分定义一个信号ageChanged(int)
+class QPerson : publ 工C QOb] ect
+{
+    Q OBJECT
+private:
+	int m_age=lO ;
+public:
+	void incAge();
+signals:
+	void ageChanged( int value);
+}
+
+void QPerson ::incAge ()
+{ 
+    m_age++;
+	emit ageChanged (m_age); // 发射信号
+}
+```
