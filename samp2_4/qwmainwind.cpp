@@ -56,7 +56,11 @@ void QWMainWind::iniUI()
     comboFont->setMinimumWidth(150); //设置组件最小宽度
     ui->mainToolBar->addWidget(comboFont);//添加到工具栏
 
+    // ui->mainToolBar->addAction(ui->actionClear);
+
     setCentralWidget(ui->textEdit); //将txtEdit设置为中心组件，自动填充整个工作区
+
+
 
 }
 
