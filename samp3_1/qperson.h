@@ -14,6 +14,7 @@ class QPerson : public QObject
     Q_PROPERTY(int age READ age WRITE setAge NOTIFY ageChanged)
     Q_PROPERTY(QString name MEMBER m_name)
     Q_PROPERTY(int score MEMBER m_score)
+
 private:
     int m_age = 10;
     QString m_name;

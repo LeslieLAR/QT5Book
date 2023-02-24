@@ -25,11 +25,7 @@ connect()是QObject 类的一个静态函数，而QObject 是所有Qt 类的基�
 connect(sender,SIGNAL(signal()),receiver,SLOT(slot()));
 ```
 
-其中， sender 是发射信号的对象的名称， **signal()** 是信号名称。信号可以看做是特殊的函数，需要带括号，有参数时还需要指明参数。receiver 是接收信号的对象名称，**slot()**是槽函数的名称，需要带括号， 有参数时还需要指明参数。
-
-SIGNAL 和SLOT 是Qt 的宏，用于指明信号和槽，并将它们的参数转换为相应的字符串。
-
-
+其中， sender 是发射信号的对象的名称， **signal()** 是信号名称。信号可以看做是特殊的函数，需要带括号，有参数时还需要指明参数。receiver 是接收信号的对象名称，**slot()**是槽函数的名称，需要带括号， 有参数时还需要指明参数。SIGNAL 和SLOT 是Qt 的宏，用于指明信号和槽，并将它们的参数转换为相应的字符串。
 
 关于信号与槽的使用， 有以下一些规则需要**注意**
 
@@ -57,9 +53,70 @@ SIGNAL 和SLOT 是Qt 的宏，用于指明信号和槽，并将它们的参数�
 
 ## 第三章 Qt 类库概述
 
+### 元对象系统
+
+组成部分
+
+- QObject类是所有使用原对象系统的类的基类
+
+- 在一个类的private部分声明了Q_OBJECT宏，使得类可以使用原对象的特征，如动态属性、信号与槽
+
+- MOC（元对象编译器）为每个QObject的子类提供必要代码类实现原对象的特性
+
+- QObject::metaObject()函数返回类关联的元对象
+
+  ```c++
+  QObject*obj=new QPushButton;
+  obj->metaObject()->className();
+  ```
+
+- QMetaObject::newInstance()函数创建类的一个新的实例
+- QObject::inherits() 函数判断一个类是都是名称className的类或者QObject的子类的实例
+- QObject::tr()和QObject::trUtf8()函数可翻译字符串
+- QObject::setProperty()和QObject::Property()函数用于通过属性名称动态设置和获取属性
+- 对于QObject及其子类，可使用qobject_cast()进行动态投射
+  
+### 属性系统
+```
+Q_PROPERTY(type name
+   READ getFunction
+   [WRITE setFunction]
+   [RESET resetFunction]
+   [NOTIFY notifySignal]
+   [DESIGNABLE bool]
+   [SCRIPTABLE bool]
+   [STORED bool]
+   [USER bool]
+   [CONSTANT]
+   [FINAL])
+```
+
+- READ：用于读取属性值，如果未指定成员变量（通过MEMBER ），则需要读取访问器函数。
+
+- WRITE：写访问器函数是可选的。用于设置属性值。它必须返回void，并且必须只接受一个参数，要么是属性的类型，要么是指向该类型的指针或引用。
+
+- MEMBER：如果未指定读取访问器函数，则需要成员变量关联。这使得给定的成员变量可读写，而无需创建读写访问器函数。如果需要控制变量访问，除了成员变量关联（但不是两者）之外，还可以使用读或写访问器函数。
+
+- RESET：复位功能是可选的。它用于将属性设置回其特定于上下文的默认值。
+
+- NOTIFY：通知信号是可选的。如果已定义，它应该指定该类中的一个现有信号，该信号在属性值更改时发出。成员变量的通知信号必须采用零个或一个参数，这些参数必须与属性的类型相同。参数将采用属性的新值。仅当属性确实发生更改时才应发出NOTIFY信号，以避免绑定在QML中被不必要地重新计算。
+
+- REVISION：修订号是可选的。如果包含，它将定义属性及其通知程序信号，以便在特定版本的API中使用（通常用于暴露于QML）。如果不包含，则默认为0。
+
+- DESIGNABLE：表示属性是否应该在GUI设计工具（例如Qt Designer）的属性编辑器中可见。大多数属性是可设计的（默认为true）。可以指定布尔成员函数，而不是true或false。
+
+- SCRIPTABLE：表示脚本引擎是否应该访问此属性（默认为true）。可以指定布尔成员函数，而不是true或false。
+
+- STORED：表示属性是应该被认为是独立存在还是依赖于其他值。它还指示在存储对象状态时是否必须保存属性值。
+
+- USER：表示是将属性指定为类的面向用户属性还是用户可编辑属性。通常，每个类只有一个用户属性（默认值为false）。
+
+- CONSTANT：表示属性值是常量。对于给定的对象实例，常量属性的READ方法每次调用时必须返回相同的值。对于对象的不同实例，此常量值可能不同。常量属性不能有写入方法或通知信号。
+
+- FINAL：表示派生类不会重写该属性。在某些情况下，这可以用于性能优化，但不是由moc强制执行的
 ### 信号与槽补充
 
-- connect（） 函数的不同参数形式
+- connect() 函数的不同参数形式
 
 **QObject::connect()** 函数有多重参数形式， 一种参数形式的函数原型是：
 
@@ -84,7 +141,7 @@ QMetaObject::Connection QObject::connect(const QObject * sender , canst QMetaMet
 对于具有默认参数的信号与槽（即信号名称是唯一的， 没有参数不同而同名的两个信号） ，可
 以使用这种函数指针形式进行关联
 
--  使用sender（）获得信号发射者
+-  使用**sender()**获得信号发射者
 
 在槽函数里， 使用**QObject: : sender()**可以获取信号发射者的指针。如果知道信号发射者的类型，可以将指针投射为确定的类型， 然后使用这个确定类的接口函数。
 ```c++
@@ -113,3 +170,124 @@ void QPerson ::incAge ()
 	emit ageChanged (m_age); // 发射信号
 }
 ```
+
+### 顺序容器
+- QList<T>
+```c++
+QList<Qstring> list;
+list<<"one"<<"two"<<three";
+QString str1=list[0];
+Qstring str0=list.at(0);
+```
+- QLinkList<T>
+-  QVector<T>
+- QStack<T>
+- QQueue<T>
+
+### 关联容器
+- QSet<T>
+- QMap<Key,T>
+```c++
+QMap<String,int> map;
+map["one"]=1;
+map["two"]=2;
+map["three"]=3;
+
+map.insert("four")=4;
+
+map.remove("four")=4;
+```
+
+- QMultimap<Key,T>
+- QHash<Key,T>
+- QQMultiHash<Key,T>
+
+## 第四章 常用界面设计组件
+
+### 字符串与输入输出
+
+/ 字符串转换数值
+
+```c++
+int toInt(bool *ok = nullptr, int base = 10) const
+long toLong(bool *ok = nullptr, int base = 10) const
+float toFloat(bool *ok = nullptr) const
+double toDouble(bool *ok = nullptr) const
+    
+QString number(int, int base=10);
+QString &setNum(short, int base=10);
+```
+
+/ 其他操作
+
+- append()、prepend() 
+
+```c++
+QString &append(const QString &str)// append()后加字符串
+QString &prepend(const QString &str) // prepend()前加字符串
+```
+
+- toUpper()、toLower() 
+
+```c++
+QString toUpper() const // toUpper()全部转换为大写
+QString toLower() const // toLower()全部转换为小写
+```
+
+- count()、size()、length()
+
+```c++
+// 返回字符串中字符个数
+int count(const QString &str, Qt::CaseSensitivity cs = Qt::CaseSensitive) const 
+int size() const
+int length() const
+```
+
+- trimmed()、simplified()
+
+```c++
+QString trimmed() const 		// trimmed()去除字符串首尾空格
+QString simplified() const   	// simplified()不仅去除字符串首尾空格，中间连续空格也用一个空格代替
+```
+
+- indexOf()、lastIndexOf()
+
+```c++
+int indexOf(const QString &str, int from = 0, Qt::CaseSensitivity cs = Qt::CaseSensitive) const 	//indexOf()查找子串首次首先的位置
+int lastIndexOf(const QString &str, int from = -1, Qt::CaseSensitivity cs = Qt::CaseSensitive) const // lastIndexO()f查找子串末次首先的位置
+```
+
+- isNull()、isEmpty()
+
+```c++
+// 判空 常用isEmpty()
+bool isNull() const
+bool isEmpty() const
+```
+
+- contains()
+
+```c++
+bool contains(const QString &str, Qt::CaseSensitivity cs = ...) const // 判断字符串内是否包含子串
+```
+
+- endsWith()、startsWith()
+
+```c++
+bool endsWith(const QString &s, Qt::CaseSensitivity cs = Qt::CaseSensitive) const // endWith()是否以某个字符串结尾
+bool startsWith(const QString &s, Qt::CaseSensitivity cs = Qt::CaseSensitive) const //startsWith()是否以某个字符串开头
+```
+
+- left()、right()
+
+```c++
+QString left(int n) const // left()从字符串中左取n个字符
+QString right(int n) const // right()从字符串中右取n个字符
+```
+
+- section()
+
+```c++
+QString section(QChar sep, int start, int end = ..., QString::SectionFlags flags = SectionDefault) const //从字符串中以sep为分隔符，从start到end端的字符串
+```
+

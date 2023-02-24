@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QMetaProperty>
-
+#include <QDebug>
 #include "qperson.h"
 namespace Ui
 {
