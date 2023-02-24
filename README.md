@@ -291,3 +291,97 @@ QString right(int n) const // right()从字符串中右取n个字符
 QString section(QChar sep, int start, int end = ..., QString::SectionFlags flags = SectionDefault) const //从字符串中以sep为分隔符，从start到end端的字符串
 ```
 
+### QSpinBox的使用
+
+| 属性               | 描述               |
+| ------------------ | ------------------ |
+| prefix             | 前缀               |
+| suffix             | 后缀               |
+| diaplayIntegerBase | 显示整数使用的进制 |
+| decimals           | 显示数值的小数位数 |
+
+### 时间日期相关
+
+```c++
+// QDate
+QDate curDate = QDate::currentDate(); //获取当前时间
+// QTime
+QTime curTime = QTime::currentTime(); //获取当前时间
+// QDateTime
+DateTime curDateTime = QDateTime::currentDateTime(); //读取当前日期时间
+```
+
+### QComboBox和QPlainTextEdit
+
+```c++
+ //添加列表项 
+comboBox->addItem(icon, QString::asprintf("Item %d", i)); //带图标
+comboBox->addItem(QString::asprintf("Item %d",i)); //不带图标
+```
+
+```c++
+// 逐行读取plainTextEdit的内容
+QTextDocument*  doc = ui->plainTextEdit->document(); //QPlainTextEdit 的内容保存在一个 QTextDocument 里
+int cnt = doc->blockCount(); //QTextDocument分块保存内容，文本文件就是硬回车符是一个block,
+
+QIcon   icon(":/images/icons/aim.ico");
+
+ui->comboBox->clear();  //清除条目
+for (int i = 0; i < cnt; i++) //扫描所有 blobk
+{
+	QTextBlock textLine = doc->findBlockByNumber(i); //用blobk编号获取block，就是获取一行
+	QString str = textLine.text(); //转换为文本
+	ui->comboBox->addItem(icon, str); //添加一个条目到comboBox
+}
+```
+
+### QListWidget
+
+```c++
+//添加
+QListWidgetItem* aItem=new QListWidgetItem;
+aItem->setText(str); //设置文字标签
+aItem->setIcon(aIcon);//设置图标
+aItem->setCheckState(Qt::Checked); //设置为选中状态
+listWidget->addItem(aItem); //增加一个项
+
+//清空
+listWidget->clear();
+
+//删除
+int row = listWidget->currentRow(); //当前行
+QListWidgetItem* aItem =listWidget->takeItem(row); //移除指定行的项，但不delete
+delete aItem; //需要手工删除对象
+
+//插入
+listWidget->insertItem(listWidget->currentRow(), aItem); //在当前行的上方插入一个项
+
+//改变状态
+aItem->setCheckState();
+Qt::Checked	//设置为选中
+Qt::Unchecked	//不选
+```
+
+### QToolButton
+
+```c++
+// QToolButton按钮设置Action
+ui->tBtnListIni->setDefaultAction(ui->actListIni);
+
+// 创建下拉菜单
+QMenu* menuSelection = new QMenu(this); //创建选择弹出式菜单
+menuSelection->addAction(ui->actSelALL);
+menuSelection->addAction(ui->actSelNone);
+menuSelection->addAction(ui->actSelInvs);
+ui->tBtnSelectItem->setPopupMode(QToolButton::MenuButtonPopup);//菜单弹出模式，执行按钮的Action
+ui->tBtnSelectItem->setToolButtonStyle(Qt::ToolButtonTextBesideIcon); //按钮样式
+ui->tBtnSelectItem->setDefaultAction(ui->actSelPopMenu);//关联Action
+ui->tBtnSelectItem->setMenu(menuSelection); //设置下拉菜单
+
+//鼠标光标位置显示右键快捷菜单
+QMenu* menuList = new QMenu(this); //创建菜单
+menuList->addAction(ui->actSelNone);
+menuList->addAction(ui->actSelInvs);
+menuList->exec(QCursor::pos()); //在鼠标光标位置显示右键快捷菜单
+```
+
