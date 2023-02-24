@@ -206,7 +206,7 @@ map.remove("four")=4;
 
 ### 字符串与输入输出
 
-/ 字符串转换数值
+字符串转换数值
 
 ```c++
 int toInt(bool *ok = nullptr, int base = 10) const
@@ -218,7 +218,7 @@ QString number(int, int base=10);
 QString &setNum(short, int base=10);
 ```
 
-/ 其他操作
+其他操作
 
 - append()、prepend() 
 
