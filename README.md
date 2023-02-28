@@ -385,3 +385,23 @@ menuList->addAction(ui->actSelInvs);
 menuList->exec(QCursor::pos()); //在鼠标光标位置显示右键快捷菜单
 ```
 
+### QTreeWidget和QDockWidget
+
+```c++
+QTreeWidget* treeFiles; // 窗体 
+enum    treeColNum {colItem = 0, colItemType = 1}; //目录树列的编号定义
+
+QTreeWidgetItem*  item = new QTreeWidgetItem(MainWindow::itTopItem); //新建节点时设定类型为 itTopItem 1001 也是数字 没有实际意义
+
+item->setIcon(MainWindow::colItem, icon); //设置第1列的图标
+item->setText(MainWindow::colItem, "图片文件"); //设置第1列的文字
+item->setText(MainWindow::colItemType, "type=itTopItem"); //设置第2列的文字
+
+item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsAutoTristate);
+item->setCheckState(colItem, Qt::Checked); //设置为选中
+
+item->setData(MainWindow::colItem, Qt::UserRole, QVariant(dataStr)); //设置节点第1列的Qt::UserRole的Data
+
+ui->treeFiles->addTopLevelItem(item);//添加顶层节点
+```
+
