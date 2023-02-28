@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>724</width>
-    <height>430</height>
+    <width>963</width>
+    <height>627</height>
    </rect>
   </property>
   <property name="font">
@@ -75,7 +75,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>724</width>
+     <width>963</width>
      <height>24</height>
     </rect>
    </property>
@@ -116,7 +116,6 @@
    <addaction name="actAddFolder"/>
    <addaction name="actAddFiles"/>
    <addaction name="actDeleteItem"/>
-   <addaction name="actScanItems"/>
    <addaction name="separator"/>
    <addaction name="actZoomIn"/>
    <addaction name="actZoomOut"/>
@@ -286,7 +285,7 @@
   </action>
   <action name="actZoomIn">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="res.qrc">
@@ -304,7 +303,7 @@
   </action>
   <action name="actZoomOut">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="res.qrc">
@@ -321,8 +320,11 @@
    </property>
   </action>
   <action name="actZoomRealSize">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="res.qrc">
@@ -337,7 +339,7 @@
   </action>
   <action name="actZoomFitW">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="res.qrc">
@@ -355,7 +357,7 @@
   </action>
   <action name="actDeleteItem">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="res.qrc">
@@ -382,7 +384,7 @@
   </action>
   <action name="actZoomFitH">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="res.qrc">

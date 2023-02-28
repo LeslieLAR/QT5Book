@@ -387,6 +387,8 @@ menuList->exec(QCursor::pos()); //在鼠标光标位置显示右键快捷菜单
 
 ### QTreeWidget和QDockWidget
 
+#### QTreeWidget
+
 ```c++
 QTreeWidget* treeFiles; // 窗体 
 enum    treeColNum {colItem = 0, colItemType = 1}; //目录树列的编号定义
@@ -403,5 +405,17 @@ item->setCheckState(colItem, Qt::Checked); //设置为选中
 item->setData(MainWindow::colItem, Qt::UserRole, QVariant(dataStr)); //设置节点第1列的Qt::UserRole的Data
 
 ui->treeFiles->addTopLevelItem(item);//添加顶层节点
+```
+
+#### QDockWidget
+
+```c++
+dockWidget->setVisible(arg1) // 停靠区的可见性
+```
+
+### QPixmap
+
+```c++
+curPixmap.load(filename); //从文件载入图片
 ```
 
