@@ -89,7 +89,7 @@ void MainWindow::on_actListInsert_triggered()
     QIcon aIcon;
     aIcon.addFile(":/images/icons/check2.ico"); //图标
 
-    bool chk = ui->chkBoxListEditable->isChecked(); //是否可比那几
+    bool chk = ui->chkBoxListEditable->isChecked(); //是否可编辑
 
     QListWidgetItem* aItem = new QListWidgetItem("New Inserted Item"); //创建一个项
     aItem->setIcon(aIcon);//设置图标
